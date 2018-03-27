@@ -1,0 +1,132 @@
+CMS参数配置检查
+服务	检查项	当前状态	建议修改
+Service Monitor	Java堆栈	12GB	4GB
+	非Java堆栈	12GB	8GB
+Host Monitor	Java堆栈	12GB	4GB
+	非Java堆栈	12GB	8GB
+Event Server	Java堆栈	8GB	2GB
+Report Manager	Java堆栈	8GB	2GB
+Alert Publisher	Java堆栈	1GB	1GB
+Navigator Audit Server	Java堆栈	4GB	4GB
+Navigator Metadata Server	Java堆栈	8GB	8GB
+
+Spark参数配置检查
+角色	检查项	当前状态	建议修改
+History Server	history_server_max_heapsize	512MB	4GB
+
+Impala参数配置检查
+角色	检查项	当前状态	建议修改
+Impala Daemon	mem_limit	128GB
+96GB	Impala工作节点内存大小
+统一修改为：128GB
+
+ZooKeeper参数配置检查
+检查项	当前状态	建议修改
+maxClientCnxns
+最大客户端连接数	60	1024
+Java堆栈	1GB	4GB
+maxSessionTimeout
+最大会话超时	60000ms	90000ms
+dataDir	/data01/zookeeper	建议ZooKeeper数据目录挂载到单独磁盘上
+dataLogDir	/data01/zookeeper	建议ZooKeeper事物日志目录挂载到单独磁盘上
+
+HDFS参数配置检查
+检查项	当前状态	建议修改
+HDFS的Block Size	128MB	
+HDFS副本数	默认：3
+最大：512
+最小：1	
+HDFS总空间	4.77PB	
+HDFS已用空间	2.05PB	
+HDFS可用空间	2.71PB	
+HDFS Trash配置	fs.trash.interval：1天	
+NameNode数据目录	/data01/dfs/nn	HDFS NameNode fsimage存放位置
+建议NameNode数据目录挂载到单独磁盘上
+NameNode的Java堆栈	32GB	64GB
+NameNode堆栈使用率	15GB	
+NameNode服务器线程数
+dfs.namenode.handler.count	100	HDFS NameNode 最大请求处理线程数量。
+
+建议值：ln(number of datanodes) * 20
+
+修改为：200
+NameNode用于服务调用的服务器线程数
+dfs.namenode.service.handler.count	109	200
+Checkpoint周期
+dfs.namenode.checkpoint.period	1小时	
+Checkpoint事物阈值
+dfs.namenode.checkpoint.txns	1000000	
+Safemode离开条件
+dfs.namenode.safemode.threshold-pct	0.999	
+dfs.data.dir	/data01/dfs/dn	HDFS DataNode数据存放位置。
+建议：
+JBOD, no LVM, no RAID 
+10个磁盘（对应10个数据目录）
+DataNode的Java堆栈	3GB	8GB
+dfs.datanode.handler.count	3	HDFS DataNode 最大请求处理线程数量
+修改为：64
+dfs.datanode.max.xcievers	4096	HDFS DataNode 上最大并行传输的线程数量
+修改为：8192
+dfs.datanode.du.reserved	10GB	
+dfs.datanode.failed.volumes.tolerated	0	如果有多个数据盘，建议设为1或2
+dfs.client.read.shortcircuit	Enabled	
+dfs.datanode.balance.bandwidthPerSec	1GB	网络带宽的十分之一
+Failover Controller
+Java堆栈	256MB	2GB
+Failover Controller
+Java堆栈	256MB	2GB
+Balancer
+Java堆栈	4GB	4GB
+
+YARN/MR参数配置检查
+检查项	当前状态	建议修改
+资源总量VCore	4304	
+资源总量Memory	19.3PB	
+资源调度策略	DRF（内存+CPU）	
+ResourceManager的Java堆栈	1GB	4GB
+ResourceManager最小容器内存	6GB	2GB
+ResourceManager容器内存增量	512MB	
+ResourceManager最大容器内存	120.86GB	NodeManager的容器内存大小（建议值：80GB）
+ResourceManager最小容器虚拟内核	1	
+ResourceManger容器虚拟内核增量	1	
+ResourceManager最大容器虚拟内核	19	NodeManager的容器虚拟内核数量（建议值：40）
+NodeManager
+yarn.nodemanager.local-dirs	/data01/yarn/nm	YARN容器日志目录
+与DataNode数据目录类似，建议存放到多个磁盘上
+NodeManager的Java堆栈	1GB	4GB
+NodeManager容器内存	80.54GB
+120.86GB	与节点vcore数量相当的内存数量，或者两倍于vcore数量相当的内存；具体配置视实际的物理机配置状况（建议值：40*2=80GB）
+NodeManager容器虚拟内核数量	16
+19	节点的实际vcore数量
+建议值：40
+Application Master容器内存
+yarn.app.mapreduce.am.resource.mb	16GB	4GB
+Application Master虚拟CPU数量
+yarn.app.mapreduce.am.resource.cpu-vcores	1	
+Application Master Java堆栈	12GB	0.8倍于容器内存（建议值：3.2GB）
+Map/Reduce容器内存	8GB	
+Map/Reduce任务虚拟内核数	1	
+Map/Reduce Java堆栈	6GB	0.8倍于Map/Reduce容器内存（建议值：6.4GB）
+客户端Java堆栈	12GB	建议值：4GB
+I/O排序内存缓冲
+mapreduce.task.io.sort.mb	256MB	建议值：1GB
+I/O排序因子
+mapreduce.task.io.sort.factor	64	
+I/O排序溢出百分比
+mapreduce.map.sort.spill.percent	0.8	
+M/R输出的数据压缩	Map：Snappy
+Reduce：未使用	
+推理执行
+mapreduce.map.speculative
+mapreduce.reduce.speculative	未使用	建议开启（可应对“慢内存”等问题）
+Reduce慢启动
+mapreduce.job.reduce.slowstart.completedmaps	0.8	
+JobHistory Server 
+Java堆栈	1GB	4GB
+
+HIVE参数配置检查
+检查项	当前状态	建议修改
+Hive Server2的Java堆栈	4GB	4GB
+Hive Metastore的Java堆栈	8GB	8GB
+Hive Gateway的Java堆栈	2GB	2GB
+
