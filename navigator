@@ -11,3 +11,18 @@
 10	数据血缘关系统计分析	支持指定任意多张表统计字段级别的血缘关系层级数量	可视化UI操作
 		支持指定任意多个字段统计血缘关系层级数量	可视化UI操作
 
+
+
+errors:
+已经更改解码方式
+character_set_server=utf8
+init_connect='SET NAMES utf8'
+
+navigator_audit_server
+OPERATION_TEXT
+IMPALA_AUDIT_EVENTS_2018_04_13
+
+已经尝试更改解码方式为utf8但仍然报错。
+
+navigator运行缓慢，
+Navigator Metadata Server磁盘占用空间增长迅速，磁盘被写满，已经占了超过120GB，一般需要多大空间？？
