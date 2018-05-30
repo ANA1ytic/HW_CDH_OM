@@ -1,3 +1,18 @@
+#This is a python script aim to convert impala table to parquet format according to database you input.
+#example:
+#python table_convert.py test1 test2
+#or 
+#python table_convert.py all
+#convert all databases' table to parquet
+#
+#This python script is written for python 2.7!
+#
+#For package impyla, please check:
+#https://github.com/cloudera/impyla/blob/master/README.md
+#
+#you must install following package: 
+#six, bit_array, and thrift 0.9.3 !!! for python 2.7
+
 from impala.dbapi import connect
 import re, sys, os
 
