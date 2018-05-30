@@ -1,4 +1,6 @@
 #This is a python script aim to convert impala table to parquet format according to database you input.
+#impala 2.7
+#python 2.7
 #example:
 #python table_convert.py test1 test2
 #or 
